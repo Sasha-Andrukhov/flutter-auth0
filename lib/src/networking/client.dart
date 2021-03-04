@@ -66,17 +66,15 @@ class Auth0Client {
     }
     var _client = new http.Client();
     Map<String, Future<http.Response>> handler = {
-      'POST': _client.post(url, body: Map.from((body ?? {}))),
-      'GET': _client.get(url, headers: headers),
-      'PATCH': _client.patch(url, body: Map.from((body ?? {}))),
+      'POST': http.post(url, body: Map.from((body ?? {}))),
+      'GET': http.get(url, headers: headers),
+      'PATCH': http.patch(url, body: Map.from((body ?? {}))),
     };
     http.Response uriResponse;
     try {
       uriResponse = await handler[method];
     } catch (e) {
       print(e);
-    } finally {
-      _client.close();
     }
     return uriResponse;
   }
