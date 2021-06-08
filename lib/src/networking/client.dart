@@ -64,11 +64,10 @@ class Auth0Client {
     if (bearer != null) {
       headers['Authorization'] = this.bearer;
     }
-    var _client = new http.Client();
     Map<String, Future<http.Response>> handler = {
-      'POST': http.post(url, body: Map.from((body ?? {}))),
-      'GET': http.get(url, headers: headers),
-      'PATCH': http.patch(url, body: Map.from((body ?? {}))),
+      'POST': http.post(Uri.parse(url), body: Map.from((body ?? {}))),
+      'GET': http.get(Uri.parse(url), headers: headers),
+      'PATCH': http.patch(Uri.parse(url), body: Map.from((body ?? {}))),
     };
     http.Response uriResponse;
     try {
