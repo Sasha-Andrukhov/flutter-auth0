@@ -64,14 +64,19 @@ class Auth0Client {
     if (bearer != null) {
       headers['Authorization'] = this.bearer;
     }
-    Map<String, Future<http.Response>> handler = {
-      'POST': http.post(Uri.parse(url), body: Map.from((body ?? {}))),
-      'GET': http.get(Uri.parse(url), headers: headers),
-      'PATCH': http.patch(Uri.parse(url), body: Map.from((body ?? {}))),
-    };
     http.Response uriResponse;
     try {
-      uriResponse = await handler[method];
+      switch(method){
+        case 'POST':
+          uriResponse = await http.post(Uri.parse(url), body: Map.from((body ?? {})));
+          break;
+        case 'GET':
+          uriResponse = await http.get(Uri.parse(url), headers: headers);
+          break;
+        case 'PATCH':
+          uriResponse = await http.patch(Uri.parse(url), body: Map.from((body ?? {})));
+          break;
+      }
     } catch (e) {
       print(e);
     }
