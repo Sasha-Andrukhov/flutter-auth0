@@ -1,10 +1,9 @@
 package io.flutter.plugins.flutterauth0;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -13,6 +12,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import java.util.Map;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 
 import io.flutter.plugins.flutterauth0.common.AuthenticationFactory;
 
@@ -25,6 +25,7 @@ public class FlutterAuth0Plugin implements FlutterPlugin, MethodCallHandler, Act
     private MethodChannel channel;
     private String packageName;
     private Activity activity;
+    public static Class activityClass;
 
     @Override
     public void onMethodCall(MethodCall call, Result result) {
@@ -42,7 +43,7 @@ public class FlutterAuth0Plugin implements FlutterPlugin, MethodCallHandler, Act
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
-        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), CHANNEL);
+        channel = new MethodChannel(binding.getBinaryMessenger(), CHANNEL);
         channel.setMethodCallHandler(this);
         packageName = AuthenticationFactory.getIdentifier(binding.getApplicationContext());
     }
@@ -53,23 +54,27 @@ public class FlutterAuth0Plugin implements FlutterPlugin, MethodCallHandler, Act
     }
 
     @Override
-    void onAttachedToActivity(ActivityPluginBinding binding) {
+    public void onAttachedToActivity(ActivityPluginBinding binding) {
         activity = binding.getActivity();
+        activityClass = activity.getClass();
     }
 
     @Override
     public void onDetachedFromActivityForConfigChanges() {
         activity = null;
+        activityClass = null;
     }
 
     @Override
     public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
         activity = binding.getActivity();
+        activityClass = activity.getClass();
     }
 
     @Override
     public void onDetachedFromActivity() {
         activity = null;
+        activityClass = null;
     }
 
     @SuppressWarnings("unchecked")
@@ -96,4 +101,7 @@ public class FlutterAuth0Plugin implements FlutterPlugin, MethodCallHandler, Act
         response.success(code);
     }
 
+    public static Class getActivity() {
+        return activityClass;
+    }
 }

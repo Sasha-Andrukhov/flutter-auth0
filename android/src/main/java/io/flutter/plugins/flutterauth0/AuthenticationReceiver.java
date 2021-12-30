@@ -24,7 +24,7 @@ public class AuthenticationReceiver extends Activity {
     }
 
     private void closeView(String token, String errorMessage) {
-        Intent intent = new Intent(AuthenticationReceiver.this, FlutterAuth0Plugin.getActivity().getClass());
+        Intent intent = new Intent(AuthenticationReceiver.this, FlutterAuth0Plugin.getActivity());
         intent.putExtra(EXTRA_CODE, token);
         intent.putExtra(EXTRA_ERROR, errorMessage);
         if (errorMessage != null)
