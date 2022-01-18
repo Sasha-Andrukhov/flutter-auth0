@@ -4,10 +4,10 @@ class Auth0Client {
   final String protocol;
   final String domain;
   final dynamic telemetry;
-  final String bearer;
+  final String? bearer;
   final String baseUrl;
 
-  Auth0Client.fromClient(Auth0Client client, {String bearer})
+  Auth0Client.fromClient(Auth0Client client, {String? bearer})
       : protocol = client.protocol,
         domain = client.domain,
         telemetry = client.telemetry,
@@ -18,23 +18,22 @@ class Auth0Client {
       this.protocol, this.domain, this.telemetry, this.bearer, this.baseUrl);
 
   factory Auth0Client(String baseUrl, {dynamic telemetry, dynamic token}) {
-    assert(baseUrl != null);
     var parsed = Uri.parse(baseUrl);
     final String scheme = parsed.scheme;
     final String host = parsed.host;
-    final String authorization = token != null ? 'Bearer $token' : null;
+    final String? authorization = token != null ? 'Bearer $token' : null;
     return Auth0Client._(scheme, host, telemetry, authorization, baseUrl);
   }
 
-  Future<http.Response> mutate(String path, dynamic body) async {
+  Future<http.Response?> mutate(String path, dynamic body) async {
     return this.request('POST', url(path), body: body);
   }
 
-  Future<http.Response> update(String path, dynamic body) async {
+  Future<http.Response?> update(String path, dynamic body) async {
     return this.request('PATCH', url(path), body: body);
   }
 
-  Future<http.Response> query(String path, {dynamic params}) async {
+  Future<http.Response?> query(String path, {dynamic params}) async {
     return this.request('GET', url(path, query: params));
   }
 
@@ -54,9 +53,9 @@ class Auth0Client {
         : parsed.toString();
   }
 
-  Future<http.Response> request(String method, String url,
+  Future<http.Response?> request(String method, String url,
       {dynamic body, dynamic headers}) async {
-    Map<String, String> headers = {
+    Map<String, String?> headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'Auth0-Client': this.encodedTelemetry()
@@ -64,14 +63,14 @@ class Auth0Client {
     if (bearer != null) {
       headers['Authorization'] = this.bearer;
     }
-    http.Response uriResponse;
+    http.Response? uriResponse;
     try {
       switch(method){
         case 'POST':
           uriResponse = await http.post(Uri.parse(url), body: Map.from((body ?? {})));
           break;
         case 'GET':
-          uriResponse = await http.get(Uri.parse(url), headers: headers);
+          uriResponse = await http.get(Uri.parse(url), headers: headers as Map<String, String>?);
           break;
         case 'PATCH':
           uriResponse = await http.patch(Uri.parse(url), body: Map.from((body ?? {})));
