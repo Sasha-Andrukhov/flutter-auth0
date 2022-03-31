@@ -130,6 +130,7 @@ class Auth0Auth {
           'client_id': this.clientId,
           'grant_type': 'http://auth0.com/oauth/grant-type/password-realm',
         });
+      throw new Exception("test2");
       http.Response res = await this.client.mutate('/oauth/token', payload);
       return await responseDataHandler(res);
     } catch (e) {
