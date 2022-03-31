@@ -104,8 +104,8 @@ class Auth0Auth {
         });
       http.Response res = await this.client.mutate('/oauth/token', payload);
       return await responseDataHandler(res);
-    } catch (e) {
-      throw new Auth0Exeption(description: e);
+    } catch (e, stackTrace) {
+      throw new Auth0Exeption(description: e, stackTrace: stackTrace);
     }
   }
 
@@ -130,14 +130,14 @@ class Auth0Auth {
           'client_id': this.clientId,
           'grant_type': 'http://auth0.com/oauth/grant-type/password-realm',
         });
-      throw new Exception("test2");
       http.Response res = await this.client.mutate('/oauth/token', payload);
       return await responseDataHandler(res);
-    } catch (e) {
+    } catch (e, stackTrace) {
       throw new Auth0Exeption(
           name: e['name'] ?? e['error'],
           description:
-              e['message'] ?? e['description'] ?? e['error_description']);
+              e['message'] ?? e['description'] ?? e['error_description'],
+          stackTrace: stackTrace);
     }
   }
 
@@ -158,7 +158,6 @@ class Auth0Auth {
           'client_id': this.clientId,
           'grant_type': 'refresh_token',
         });
-      throw new TimeoutException("test");
       http.Response res = await this.client.mutate('/oauth/token', payload);
       return await responseDataHandler(res);
     } catch (e, stackTrace) {
@@ -175,8 +174,8 @@ class Auth0Auth {
     try {
       http.Response res = await this.client.query('/userinfo');
       return await responseDataHandler(res);
-    } catch (e) {
-      throw new Auth0Exeption(description: e);
+    } catch (e, stackTrace) {
+      throw new Auth0Exeption(description: e, stackTrace: stackTrace);
     }
   }
 
@@ -260,9 +259,9 @@ class Auth0Auth {
             payload,
           );
       return await responseDataHandler(res);
-    } catch (e) {
+    } catch (e, stackTrace) {
       throw new Auth0Exeption(
-          name: e['name'], description: e['message'] ?? e['description']);
+          name: e['name'], description: e['message'] ?? e['description'], stackTrace: stackTrace);
     }
   }
 }
