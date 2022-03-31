@@ -158,11 +158,11 @@ class Auth0Auth {
           'client_id': this.clientId,
           'grant_type': 'refresh_token',
         });
-      throw new Exception("test");
+      throw new TimeoutException("test");
       http.Response res = await this.client.mutate('/oauth/token', payload);
       return await responseDataHandler(res);
-    } catch (e) {
-      throw new Auth0Exeption(description: e);
+    } catch (e, stackTrace) {
+      throw new Auth0Exeption(description: e, stackTrace: stackTrace);
     }
   }
 
