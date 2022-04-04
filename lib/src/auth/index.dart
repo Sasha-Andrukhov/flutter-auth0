@@ -23,17 +23,14 @@ class Auth0Auth {
   }
 
   Future<Map> responseDataHandler(http.Response response) async {
-    print("responseDataHandler: code=${response.statusCode}");
-    String body = response.body;
-    print("responseDataHandler: body=${response.body}");
     if (response.statusCode == 200) {
-      dynamic value = jsonDecode(body);
+      dynamic value = jsonDecode(response.body);
       return Map.from(value);
     }
     else if (response.statusCode == 401) {
-      throw Auth0Exeption(description: body);
+      throw Auth0Exeption(description: response.body);
     }
-    throw jsonDecode(body);
+    throw jsonDecode(response.body);
   }
 
   //

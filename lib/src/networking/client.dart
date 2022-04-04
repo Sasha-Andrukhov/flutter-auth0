@@ -68,7 +68,7 @@ class Auth0Client {
     try {
       switch(method){
         case 'POST':
-          uriResponse = await http.post(Uri.parse(url), body: Map.from((body ?? {}))).timeout(const Duration(milliseconds: 50));
+          uriResponse = await http.post(Uri.parse(url), body: Map.from((body ?? {})));
           break;
         case 'GET':
           uriResponse = await http.get(Uri.parse(url), headers: headers);
