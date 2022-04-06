@@ -64,6 +64,9 @@ class Auth0Client {
     if (bearer != null) {
       headers['Authorization'] = this.bearer;
     }
+    print("Auth req: url=$url");
+    print("Auth req: headers=$headers");
+    print("Auth req: body=$body");
     http.Response uriResponse;
     try {
       switch(method){
