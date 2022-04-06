@@ -24,7 +24,9 @@ class Auth0Auth {
 
   Future<Map> responseDataHandler(http.Response response) async {
     if (response.statusCode == 200) {
-      dynamic value = jsonDecode(response.body);
+      String body = response.body;
+      print("Auth resp: $body");
+      dynamic value = jsonDecode(body);
       return Map.from(value);
     }
     else if (response.statusCode == 401) {
