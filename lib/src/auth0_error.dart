@@ -1,7 +1,7 @@
 part of auth0_auth;
 
 class Auth0Exeption implements Exception {
-  final String name;
+  final String? name;
   final dynamic description;
   final dynamic stackTrace;
   Auth0Exeption(

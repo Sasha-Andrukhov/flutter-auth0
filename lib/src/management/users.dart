@@ -32,9 +32,9 @@ class Users {
   Future<dynamic> getUser(dynamic parameters) async {
     assert(parameters['id'] != null);
     var payload = Map.from(parameters);
-    http.Response response =
+    http.Response? response =
         await this.client.query('/api/v2/users/${payload['id']}');
-    return await responseHandler(response);
+    return await responseHandler(response!);
   }
 
   ///Patch a user's `user_metadata`
@@ -47,10 +47,10 @@ class Users {
   Future<dynamic> patchUser(dynamic parameters) async {
     assert(parameters['id'] != null && parameters['metadata'] != null);
     var payload = Map.from(parameters);
-    http.Response response =
+    http.Response? response =
         await this.client.update('/api/v2/users/${payload['id']}', {
       'user_metadata': payload['metadata'],
     });
-    return await responseHandler(response);
+    return await responseHandler(response!);
   }
 }
