@@ -12,8 +12,8 @@ class Auth0Auth {
     return Auth0Auth._(_client, clientId);
   }
 
-  Future<dynamic> responseHandler(http.Response response) {
-    if (response.statusCode == 200) {
+  Future<dynamic>? responseHandler(http.Response? response) {
+    if (response!.statusCode == 200) {
       return jsonDecode(response.body);
     }
     else if (response.statusCode == 401) {
@@ -102,7 +102,7 @@ class Auth0Auth {
           'client_id': this.clientId,
           'grant_type': 'authorization_code',
         });
-      http.Response res = await this.client.mutate('/oauth/token', payload);
+      http.Response res = await (this.client.mutate('/oauth/token', payload) as FutureOr<http.Response>);
       return await responseDataHandler(res);
     } catch (e, stackTrace) {
       throw new Auth0Exeption(description: e, stackTrace: stackTrace);
@@ -130,9 +130,9 @@ class Auth0Auth {
           'client_id': this.clientId,
           'grant_type': 'http://auth0.com/oauth/grant-type/password-realm',
         });
-      http.Response res = await this.client.mutate('/oauth/token', payload);
+      http.Response res = await (this.client.mutate('/oauth/token', payload) as FutureOr<http.Response>);
       return await responseDataHandler(res);
-    } catch (e, stackTrace) {
+    } on Map<String, dynamic>  catch (e, stackTrace) {
       throw new Auth0Exeption(
           name: e['name'] ?? e['error'],
           description:
@@ -158,8 +158,8 @@ class Auth0Auth {
           'client_id': this.clientId,
           'grant_type': 'refresh_token',
         });
-      http.Response res = await this.client.mutate('/oauth/token', payload);
-      return await responseDataHandler(res);
+      http.Response? res = await this.client.mutate('/oauth/token', payload);
+      return await responseDataHandler(res!);
     } catch (e, stackTrace) {
       throw new Auth0Exeption(description: e, stackTrace: stackTrace);
     }
@@ -172,8 +172,8 @@ class Auth0Auth {
   //
   Future<dynamic> getUserInfo() async {
     try {
-      http.Response res = await this.client.query('/userinfo');
-      return await responseDataHandler(res);
+      http.Response? res = await this.client.query('/userinfo');
+      return await responseDataHandler(res!);
     } catch (e, stackTrace) {
       throw new Auth0Exeption(description: e, stackTrace: stackTrace);
     }
@@ -195,8 +195,8 @@ class Auth0Auth {
     return this
         .client
         .mutate('/oauth/revoke', payload)
-        .then((http.Response response) {
-      if (response.statusCode == 200) {
+        .then((http.Response? response) {
+      if (response!.statusCode == 200) {
         return {};
       }
       throw new Auth0Exeption(description: jsonDecode(response.body));
@@ -229,8 +229,8 @@ class Auth0Auth {
     return this
         .client
         .mutate('/dbconnections/change_password', payload)
-        .then((http.Response response) {
-      if (response.statusCode == 200) {
+        .then((http.Response? response) {
+      if (response!.statusCode == 200) {
         return true;
       }
       throw jsonDecode(response.body);
@@ -254,12 +254,12 @@ class Auth0Auth {
       var payload = Map.from(params)..addAll({'client_id': this.clientId});
       if (params['metadata'] != null)
         payload..addAll({'user_metadata': params['metadata']});
-      http.Response res = await this.client.mutate(
+      http.Response res = await (this.client.mutate(
             '/dbconnections/signup',
             payload,
-          );
+          ) as FutureOr<http.Response>);
       return await responseDataHandler(res);
-    } catch (e, stackTrace) {
+    } on Map<String, dynamic> catch (e, stackTrace) {
       throw new Auth0Exeption(
           name: e['name'], description: e['message'] ?? e['description'], stackTrace: stackTrace);
     }

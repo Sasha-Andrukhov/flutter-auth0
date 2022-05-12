@@ -23,7 +23,7 @@ class Auth0 {
 
   Auth0._(this.auth, this.webAuth, this.options);
 
-  factory Auth0({String baseUrl, String clientId}) {
+  factory Auth0({required String baseUrl, required String clientId}) {
     assert(baseUrl != null && clientId != null);
     final auth = Auth0Auth(clientId, baseUrl);
     final webAuth = new WebAuth(auth);
