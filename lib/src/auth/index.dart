@@ -130,8 +130,8 @@ class Auth0Auth {
           'client_id': this.clientId,
           'grant_type': 'http://auth0.com/oauth/grant-type/password-realm',
         });
-      http.Response res = await (this.client.mutate('/oauth/token', payload) as FutureOr<http.Response>);
-      return await responseDataHandler(res);
+      http.Response? res = await this.client.mutate('/oauth/token', payload);
+      return await responseDataHandler(res!);
     } on Map<String, dynamic>  catch (e, stackTrace) {
       throw new Auth0Exeption(
           name: e['name'] ?? e['error'],

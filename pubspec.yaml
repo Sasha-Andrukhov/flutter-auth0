@@ -2,7 +2,7 @@ name: flutter_auth0
 description: Flutter toolkit for Auth0 API and web pkce flow authentication
 author: Denny Segura <dev.dennysegura@gmail.com>
 homepage: https://github.com/devdennysegura/flutter-auth0
-version: 0.6.1
+version: 0.6.2
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
